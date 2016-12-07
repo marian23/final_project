@@ -1,0 +1,77 @@
+html,
+body{
+    background-color: blue;
+    margin: 0;
+    padding: 0;
+
+}
+label{
+
+}
+.card {
+    display: block;
+    margin: 2px;
+    height: 130px;
+    width: 100px;
+    padding-left: 16px;
+    border: black ;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    box-shadow: 0 1px 1px black, .15px;
+}
+
+
+
+
+/*#container{*/
+    /*position: fixed;*/
+    /*top:calc(50% + 1.5);*/
+    /*left: 50%;*/
+    /*transform: translate3d(-50%, -50%, 0);*/
+/*}*/
+
+
+
+
+.hand{
+   display: inline-block;
+   float: none;
+    text-align: left;
+    margin-right:-4px ;
+}
+
+.row{
+    text-align: center;
+
+}
+.col-sm-1{
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right:-4px ;
+}
+.play_space{
+     display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right:-4px ;
+
+}
+.col-sm-3{
+    display: inline-block;
+    float: none;
+    text-align: left;
+    margin-right:-4px ;
+}
+#gameboard{
+    display: block;
+
+
+}
+#deck{
+    margin: 50px;
+    float: left;
+    width: 100px;
+}
+
