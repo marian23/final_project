@@ -152,7 +152,8 @@ class player:
         self.own_cards()
         return {
             'name':self.name,
-            'hand': self.hand
+            'hand': self.hand,
+            'win_pile':self.win_pile
         }
 
 class game_methods:

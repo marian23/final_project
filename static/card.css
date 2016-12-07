@@ -8,13 +8,20 @@ body{
 label{
 
 }
+.card.red-border{
+    border: 1px solid red;
+}
+.card.black-border{
+    border: 1px solid black ;
+}
 .card {
     display: block;
-    margin: 2px;
+
     height: 130px;
     width: 100px;
-    padding-left: 16px;
-    border: black ;
+
+
+
     -webkit-border-radius:10px;
     -moz-border-radius:10px;
     border-radius:10px;

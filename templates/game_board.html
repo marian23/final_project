@@ -40,7 +40,7 @@
     <h2>{{name}}</h2>
     <div class="row col-lg-12">
         <div class="col-sm-1 hand">
-            <img class="card"  src="{{url_for('static', filename='image/back.png')}}">
+            <img class="card black-border"  src="{{url_for('static', filename='image/back.png')}}">
 
             <!--this is where card image player hand-->
         </div>
@@ -61,7 +61,7 @@
 
     <div class="row col-lg-12 human_player">
         <div class="col-sm-1 player-hand">
-            <img class="card"  src="{{url_for('static', filename='image/back.png')}}">
+            <img class="card black-border"  src="{{url_for('static', filename='image/back.png')}}">
 
 
             <!--this is where card image player hand-->
@@ -89,6 +89,7 @@
 </script>
 
 <script>
+
     var comp_player={{ players['players'][0]['p1']|tojson }}
     var human_player ={{ players['players'][1]['p2']|tojson}}
 
@@ -100,23 +101,78 @@
     };
     var war=function(player1,player2){
 
-    }
+{#        this function will happen if a war occurrs and will have the player deal 3 cards (as well as the
+computer, then they will each deal 1 card face-up and then the rest will flip() face up#}
+    };
+    var check_card_values=function(card1,card2){
+{#        this function will check card 1's value against cards2's value and then send bothto the card_owner of the winning card#}
+        if (card1.value>card2.value){
+            return card1.card_owner
+        }
+        if (card2.value>card1.value){
+            return card2.card_owner
+        }};
+    var give_card_winner = function (card1, card2, winner, Cplayer,Hplayer) {
+        card1.card_owner = winner
+        card2.card_owner = winner
+        if (winner!='Computer'){
+            Hplayer.win_pile.push(card1,card2)
+        }
+        else {
+            Cplayer.win_pile.push(card1,card2)
+        }
+    };
+{#    var flash;#}
+{##}
+{#    var flash_winner = function (winner) {#}
+{#        flash = setInterval(function () {#}
+{#            $('#' + winner).toggleClass('red-border');#}
+{#        }, 500);#}
+{#    },function(winner) {#}
+{#        clearInterval(flash);#}
+{#        $('#'+winner).toggleClass('black-border')#}
+{##}
+{#    }#}
 
+{#    found fisher-yates shuffle online#}
+    function  shuffle (win_pile) {
+        var m = win_pile.length, t, i;
+        while (m){
+            i = Math.floor(Math.random() * m--);
+        t = win_pile[m];
+            win_pile[m] = win_pile[i];
+            win_pile[i] =t
+    }
+        return win_pile
+    }
 
     $(document).ready(function () {
         console.log(comp_player, '----------------> Comp Player');
         console.log(human_player, '----------------> Human Player');
+{#        This click event is the basic round of a game of war#}
         $(".player-hand").click(function (e) {
+{#            todo here to check hand if empty then shuffle win pile into hand#}
+
             e.preventDefault();
 {#            PLay the computers card#}
             var computer_card = JSON.parse(pick_card(comp_player));
-            var comp_content = ('<img class="computer_played_card card" name="' + computer_card.value + '" src="/static/' + computer_card['img_src'] + '">');
+            var comp_content = ('<img class="computer_played_card card black-border" name="'+computer_card.card_owner+'"  src="/static/' + computer_card['img_src'] + '">');
             $('.play_space').replaceWith('<div class="col-sm-3 play_space">' + comp_content + '</div>');
 {#Then play the players card#}
             var human_card = JSON.parse(pick_card(human_player));
-            var content = ('<img class="human_played_card card" name="' + human_card.value + '" src="/static/' + human_card['img_src'] + '">');
+            var content = ('<img class="human_played_card card black-border"  name="'+human_card.card_owner+'" src="/static/' + human_card['img_src'] + '">');
             $('.player_play_space').replaceWith('<div class="col-sm-3 player_play_space">' + content + '</div>');
+{#              Now we will check the cards values #}
+            var winner = check_card_values(computer_card, human_card)
+{#           TODO: flash the winning cards border#}
+{#            flash_winner(winner);#}
+{#            now give the winner the cards       #}
+            give_card_winner(computer_card,human_card,winner,comp_player, human_player)
+            console.log(comp_player,human_player)
+
         })
+
+
     })
 
 </script>
