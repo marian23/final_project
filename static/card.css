@@ -8,10 +8,10 @@ body{
 label{
 
 }
-.card.red-border{
-    border: 1px solid red;
+.card .red-border{
+    border: 5px solid red;
 }
-.card.black-border{
+.card .black-border{
     border: 1px solid black ;
 }
 .card {
@@ -29,7 +29,10 @@ label{
 }
 
 
+#play-game-again{
+    height: auto;
 
+}
 
 /*#container{*/
     /*position: fixed;*/

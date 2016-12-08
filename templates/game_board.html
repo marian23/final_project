@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="viewport" , content="width=device-width, initial-scale=1" charset="UTF-8">
-    <meta id="playerone" name="{{players['players'][0]['p1']['name']}}
+    <meta id="playerone" name="{{ players['players'][0]['p1']['name'] }}
     " content="{{ players['players'][0]['p1']['hand'] }}">
     <title>war game board</title>
     <link rel="stylesheet" href="../static/card.css">
@@ -14,38 +14,38 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="../static/Jquery.cards.js"></script>
     <script src="../static/jquery.flip.js"></script>
+{#    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>#}
 
 
 </head>
 <body>
 <div class="hidden_hand">
     <div class="computer_player" hidden="hidden">
-        {% for card in players['players'][0]['p1']['hand']  %}
-        <p card>{{ card }}</p>
+        {% for card in players['players'][0]['p1']['hand'] %}
+            <p card>{{ card }}</p>
         {% endfor %}
     </div>
 </div>
 <div class="hidden_hand">
     <div id="human_player" hidden="hidden">
-        {% for card in players['players'][1]['p2']['hand']  %}
-        <p card>{{ card }}</p>
+        {% for card in players['players'][1]['p2']['hand'] %}
+            <p card>{{ card }}</p>
         {% endfor %}
     </div>
 
 </div>
 <div class="container-fluid gameboard col-lg-12">
-    <h2>{{name}}</h2>
+    <h2>{{ name }}</h2>
     <div class="row col-lg-12">
         <div class="col-sm-1 hand">
-            <img class="card black-border"  src="{{url_for('static', filename='image/back.png')}}">
+            <img class="card black-border" src="{{ url_for('static', filename='image/back.png') }}">
 
             <!--this is where card image player hand-->
         </div>
         <div class="col-sm-3 play_space">
-
 
 
             <!--where human player play card-->
@@ -54,129 +54,235 @@
         <div class="col-sm-1 win_pile">
 
 
-
             <!--where is computer winner pile is-->
         </div>
     </div>
 
     <div class="row col-lg-12 human_player">
         <div class="col-sm-1 player-hand">
-            <img class="card black-border"  src="{{url_for('static', filename='image/back.png')}}">
+            <img class="card black-border" src="{{ url_for('static', filename='image/back.png') }}">
 
 
             <!--this is where card image player hand-->
         </div>
         <div class="col-sm-3 player_play_space">
             <!--where computer player play card-->
-            <img class="card"  src="{{url_for('static', filename='image/1Clubs.png')}}">
+            <img class="card" src="{{ url_for('static', filename='image/1Clubs.png') }}">
 
         </div>
         <div class="col-sm-1 win_pile">
             <!--where is computer winner pile is-->
-            <img class="card"  src="{{url_for('static', filename='image/1Clubs.png')}}">
+            <img class="card" src="{{ url_for('static', filename='image/1Clubs.png') }}">
 
         </div>
 
+
     </div>
-    </div>
+    {#    <div id="play-game-again" title="do you want to play game again">#}
+    {#        <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 12px 12px 20px 0;"> </span> </p>#}
+    {##}
+    {##}
+    {#    </div>#}
+</div>
 
 <script type="text/javascript">
-    function cosolelogplayers(json_players){
-        console.log( json_players);
+    function cosolelogplayers(json_players) {
+        console.log(json_players);
         console.log(json_players)
     }
-    cosolelogplayers( {{players|safe}} )
+    cosolelogplayers({{players|safe}})
 </script>
 
 <script>
 
-    var comp_player={{ players['players'][0]['p1']|tojson }}
-    var human_player ={{ players['players'][1]['p2']|tojson}}
+    var comp_player = {{ players['players'][0]['p1']|tojson }};
+    var human_player = {{ players['players'][1]['p2']|tojson}};
 
-{#this function will select card from player hand#}
-    var  pick_card=function(player) {
-        var card = player.hand.splice(0,1)[0];
-{#        alert(JSON.stringify(card),'------>pickcard')#}
-        return JSON.stringify(card)
-    };
-    var war=function(player1,player2){
-
-{#        this function will happen if a war occurrs and will have the player deal 3 cards (as well as the
-computer, then they will each deal 1 card face-up and then the rest will flip() face up#}
-    };
-    var check_card_values=function(card1,card2){
-{#        this function will check card 1's value against cards2's value and then send bothto the card_owner of the winning card#}
-        if (card1.value>card2.value){
-            return card1.card_owner
+    {#this function will select card from player hand#}
+    var pick_card = function (player) {
+        if (player.hand.length == 0) {
+            shuffle_winnings(player)
         }
-        if (card2.value>card1.value){
-            return card2.card_owner
-        }};
-    var give_card_winner = function (card1, card2, winner, Cplayer,Hplayer) {
-        card1.card_owner = winner
-        card2.card_owner = winner
-        if (winner!='Computer'){
-            Hplayer.win_pile.push(card1,card2)
+        var card = player.hand.splice(0, 1)[0];
+        {#        alert(JSON.stringify(card),'------>pickcard')#}
+        {#        return JSON.stringify(card)#}
+        return card
+
+    };
+    var war = function (player1, player2, cards) {
+        var stakes = [];
+        {#        TODO: change this so it doesnt put an array in there#}
+        for (i = 0; i < cards.length; i++) {
+
+            stakes.push(cards[i]);
+        }
+        for (i = 1; i < 7; i++) {
+            {#            player play card in to stakes#}
+            if (i % 2 == 0) {
+                stakes.push(pick_card(player2))
+            }
+            else if (i % 2 != 0) {
+                stakes.push(pick_card(player1))
+            }
+        }
+        var p1card = pick_card(player1);
+        var p2card = pick_card(player2);
+        console.log(p1card);
+        console.log(p2card);
+        winner = check_card_values(p1card, p2card);
+
+        if (winner == 'war') {
+            {#            if the winner is more war, then put card 1 and 2 into the stakes and pass them down the chain#}
+            stakes.push(p1card, p2card);
+            war(player1, player2, stakes)
+
         }
         else {
-            Cplayer.win_pile.push(card1,card2)
+            {#            otherwise just give the winner the cards#}
+            stakes.push(p1card, p2card);
+            give_card_winner(stakes, winner, player1, player2);
+        }
+        {#        this function will happen if a war occurrs and will have the player deal 3 cards (as well as the
+        computer, then they will each deal 1 card face-up and then the rest will flip() face up#}
+    };
+    var check_card_values = function (card1, card2) {
+        {#        this function will check card 1's value against cards2's value and then send bothto the card_owner of the winning card#}
+        if (card1.value > card2.value) {
+            return card1.card_owner;
+        }
+        else if (card1.value < card2.value) {
+            return card2.card_owner;
+
+        }
+        else if (card1.value / card2.value == 1) {
+            return 'war';
         }
     };
-{#    var flash;#}
-{##}
-{#    var flash_winner = function (winner) {#}
-{#        flash = setInterval(function () {#}
-{#            $('#' + winner).toggleClass('red-border');#}
-{#        }, 500);#}
-{#    },function(winner) {#}
-{#        clearInterval(flash);#}
-{#        $('#'+winner).toggleClass('black-border')#}
-{##}
-{#    }#}
+    var give_card_winner = function (cards, winner, Cplayer, Hplayer) {
+        for (i = 0; i < cards.length; i++) {
+            cards[i].card_owner = winner
+        }
+        if (winner != 'Computer') {
+            for (i = 0; i < cards.length; i++) {
+                Hplayer.win_pile.push(cards[i])
+            }
+        }
+        else {
+            for (i = 0; i < cards.length; i++) {
+                Cplayer.win_pile.push(cards[i])
+            }
+        }
+    };
 
-{#    found fisher-yates shuffle online#}
-    function  shuffle (win_pile) {
+    var shuffle_winnings = function (player) {
+        shuffle(player.win_pile);
+        while (player.win_pile.length > 0) {
+            var card = player.win_pile.splice(0, 1)[0];
+            player.hand.push(card)
+        }
+        console.log('Win pile turned into hand')
+    };
+
+
+    {#    var flash;#}
+    {#    $('#winner').toggleClass(#}
+    {#            function () {#}
+    {#    var flashinterval;#}
+    {#     function  flash_winner (winner) {#}
+    {#         console.log('flash: ' + winner);#}
+    {#         flashinterval = setInterval(function () {#}
+    {#             $('#' + winner).toggleClass('red-border');#}
+    {#         }, 500);#}
+    {#     };#}
+    {#     function stop_winner(winner){#}
+    {#        clearInterval(flash);#}
+    {#        $('#' + winner).toggleClass('black-border');#}
+    {#    }#}
+
+
+    {#    found fisher-yates shuffle online#}
+    function shuffle(win_pile) {
         var m = win_pile.length, t, i;
-        while (m){
+        while (m) {
             i = Math.floor(Math.random() * m--);
-        t = win_pile[m];
+            t = win_pile[m];
             win_pile[m] = win_pile[i];
-            win_pile[i] =t
-    }
+            win_pile[i] = t
+        }
         return win_pile
     }
 
     $(document).ready(function () {
         console.log(comp_player, '----------------> Comp Player');
         console.log(human_player, '----------------> Human Player');
-{#        This click event is the basic round of a game of war#}
-        $(".player-hand").click(function (e) {
-{#            todo here to check hand if empty then shuffle win pile into hand#}
+        {#        This click event is the basic round of a game of war#}
 
-            e.preventDefault();
-{#            PLay the computers card#}
-            var computer_card = JSON.parse(pick_card(comp_player));
-            var comp_content = ('<img class="computer_played_card card black-border" name="'+computer_card.card_owner+'"  src="/static/' + computer_card['img_src'] + '">');
-            $('.play_space').replaceWith('<div class="col-sm-3 play_space">' + comp_content + '</div>');
-{#Then play the players card#}
-            var human_card = JSON.parse(pick_card(human_player));
-            var content = ('<img class="human_played_card card black-border"  name="'+human_card.card_owner+'" src="/static/' + human_card['img_src'] + '">');
-            $('.player_play_space').replaceWith('<div class="col-sm-3 player_play_space">' + content + '</div>');
-{#              Now we will check the cards values #}
-            var winner = check_card_values(computer_card, human_card)
-{#           TODO: flash the winning cards border#}
-{#            flash_winner(winner);#}
-{#            now give the winner the cards       #}
-            give_card_winner(computer_card,human_card,winner,comp_player, human_player)
-            console.log(comp_player,human_player)
+{#        while (comp_player.hand != 0 && comp_player.win_pile != 0 || human_player.hand != 0 && human_player.win_pile != 0) {#}
 
-        })
+            $(".player-hand").click(function (e) {
+
+                {#            todo here to check hand if empty then shuffle win pile into hand#}
+
+                e.preventDefault();
+                {#            PLay the computers card#}
+                if (comp_player.hand.length == 0) {
+                    shuffle_winnings(comp_player)
+                }
+                else if (human_player.hand.length == 0) {
+                    shuffle_winnings(human_player)
+                }
+                var computer_card = pick_card(comp_player);
+                var comp_content = ('<img class="computer_played_card card black-border" name="' + computer_card.card_owner + '"  src="/static/' + computer_card['img_src'] + '">');
+                $('.play_space').replaceWith('<div class="col-sm-3 play_space">' + comp_content + '</div>');
+                {#Then play the players card#}
+                var human_card = pick_card(human_player);
+                var content = ('<img class="human_played_card card black-border"  name="' + human_card.card_owner + '" ,  src="/static/' + human_card['img_src'] + '">');
+                $('.player_play_space').replaceWith('<div class="col-sm-3 player_play_space">' + content + '</div>');
+                {#              Now we will check the cards values #}
+                var winner = check_card_values(computer_card, human_card);
+                if (winner == 'war') {
+                    war(comp_player, human_player, [computer_card, human_card]);
+                }
+                {#           TODO: flash the winning cards border#}
+                {#            flash_winner(winner);#}
+
+                {#            now give the winner the cards       #}
+
+                give_card_winner([computer_card, human_card], winner, comp_player, human_player);
+                console.log(comp_player, human_player)
 
 
-    })
+            })
+{#        }#}
+    });
+    {#    });#}
+    {#        };#}
+    {#        this is where the winner jquery will place a <div> with winner name#}
+    {#        $(function () {#}
+    {#            $("#play-game-again").dialog({#}
+    {#                resizable:false,#}
+    {#                height: "auto",#}
+    {#                width: 400,#}
+    {#                modal: true,#}
+    {#                button:{#}
+    {#                    "play the game again yes or no": function () {#}
+    {#                        $(this).dialog("close");#}
+    {#                    },#}
+    {#                    Cancel: function () {#}
+    {#                        $(this).dialog("close");#}
+    {#                        window.location.reload(true)#}
+
+
+
+    {#                    }#}
+    {#                }#}
+    {#            })#}
+    {##}
+    {#        })#}
+    {#    })#}
+
 
 </script>
-
 
 
 </body>
