@@ -212,47 +212,57 @@
         return win_pile
     }
 
+
     $(document).ready(function () {
         console.log(comp_player, '----------------> Comp Player');
         console.log(human_player, '----------------> Human Player');
         {#        This click event is the basic round of a game of war#}
+        if (comp_player.hand.length==0 && comp_player.win_pile==0){
+{#            player win do something#}
+            alert('human_player win' + human_player.name)
+        }
+            if (human_player.hand.length==0 && human_player==0) {
 
-{#        while (comp_player.hand != 0 && comp_player.win_pile != 0 || human_player.hand != 0 && human_player.win_pile != 0) {#}
+            alert('computer_player win' + comp_player.name)
 
-            $(".player-hand").click(function (e) {
+            }
 
-                {#            todo here to check hand if empty then shuffle win pile into hand#}
-
-                e.preventDefault();
-                {#            PLay the computers card#}
-                if (comp_player.hand.length == 0) {
-                    shuffle_winnings(comp_player)
-                }
-                else if (human_player.hand.length == 0) {
-                    shuffle_winnings(human_player)
-                }
-                var computer_card = pick_card(comp_player);
-                var comp_content = ('<img class="computer_played_card card black-border" name="' + computer_card.card_owner + '"  src="/static/' + computer_card['img_src'] + '">');
-                $('.play_space').replaceWith('<div class="col-sm-3 play_space">' + comp_content + '</div>');
-                {#Then play the players card#}
-                var human_card = pick_card(human_player);
-                var content = ('<img class="human_played_card card black-border"  name="' + human_card.card_owner + '" ,  src="/static/' + human_card['img_src'] + '">');
-                $('.player_play_space').replaceWith('<div class="col-sm-3 player_play_space">' + content + '</div>');
-                {#              Now we will check the cards values #}
-                var winner = check_card_values(computer_card, human_card);
-                if (winner == 'war') {
-                    war(comp_player, human_player, [computer_card, human_card]);
-                }
-                {#           TODO: flash the winning cards border#}
-                {#            flash_winner(winner);#}
-
-                {#            now give the winner the cards       #}
-
-                give_card_winner([computer_card, human_card], winner, comp_player, human_player);
-                console.log(comp_player, human_player)
+        $(".player-hand").click(function (e) {
 
 
-            })
+            {#            todo here to check hand if empty then shuffle win pile into hand#}
+
+            e.preventDefault();
+            {#            PLay the computers card#}
+            if (comp_player.hand.length == 0) {
+                shuffle_winnings(comp_player)
+            }
+            else if (human_player.hand.length == 0) {
+                shuffle_winnings(human_player)
+            }
+            var computer_card = pick_card(comp_player);
+            var comp_content = ('<img class="computer_played_card card black-border" name="' + computer_card.card_owner + '"  src="/static/' + computer_card['img_src'] + '">');
+            $('.play_space').replaceWith('<div class="col-sm-3 play_space">' + comp_content + '</div>');
+            {#Then play the players card#}
+            var human_card = pick_card(human_player);
+            var content = ('<img class="human_played_card card black-border"  name="' + human_card.card_owner + '" ,  src="/static/' + human_card['img_src'] + '">');
+            $('.player_play_space').replaceWith('<div class="col-sm-3 player_play_space">' + content + '</div>');
+            {#              Now we will check the cards values #}
+            var winner = check_card_values(computer_card, human_card);
+            if (winner == 'war') {
+                war(comp_player, human_player, [computer_card, human_card]);
+            }
+            {#           TODO: flash the winning cards border#}
+            {#            flash_winner(winner);#}
+
+            {#            now give the winner the cards       #}
+
+            give_card_winner([computer_card, human_card], winner, comp_player, human_player);
+            console.log(comp_player, human_player)
+
+
+        })
+
 {#        }#}
     });
     {#    });#}
