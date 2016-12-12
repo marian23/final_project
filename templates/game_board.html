@@ -17,7 +17,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="../static/Jquery.cards.js"></script>
     <script src="../static/jquery.flip.js"></script>
-{#    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>#}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 {#    <h2 ng-if ="game.winner"#}
 
 
@@ -79,13 +79,13 @@
 
 
     </div>
-    {#    <div id="play-game-again" title="do you want to play game again">#}
-    {#        <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 12px 12px 20px 0;"> </span> </p>#}
-    {##}
-    {##}
-    {#    </div>#}
+        <div id="play-game-again" title="do you want to play game again">
+            <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 12px 12px 20px 0;"> </span> </p>
+
+
 
 </div>
+    </div>
 
 <script type="text/javascript">
     function cosolelogplayers(json_players) {
@@ -103,12 +103,19 @@
     {#this function will select card from player hand#}
     var pick_card = function (player) {
         if (player.hand.length == 0) {
-            shuffle_winnings(player)
+            try {
+                shuffle_winnings(player)
+            }
+            catch (error) {
+                call_winner_pile()
+            }
         }
+
         var card = player.hand.splice(0, 1)[0];
         {#        alert(JSON.stringify(card),'------>pickcard')#}
         {#        return JSON.stringify(card)#}
         return card
+
 
     };
     var war = function (player1, player2, cards) {
@@ -213,7 +220,17 @@
         }
         return win_pile
     }
+    var call_winner_pile = function () {
+        if (comp_player.hand.length == 0 && comp_player.win_pile == 0) {
+            alert('computer player win' + comp_player.name);
+        } else {
+            if (human_player.hand.length == 0 && human_player.win_pile == 0) {
+                alert('human player win' + human_player.name);
+            }
 
+
+        }
+    }
 
     $(document).ready(function () {
         console.log(comp_player, '----------------> Comp Player');
@@ -301,31 +318,31 @@
 
 {#        }#}
     });
-    {#    });#}
-    {#        };#}
-    {#        this is where the winner jquery will place a <div> with winner name#}
-    {#        $(function () {#}
-    {#            $("#play-game-again").dialog({#}
-    {#                resizable:false,#}
-    {#                height: "auto",#}
-    {#                width: 400,#}
-    {#                modal: true,#}
-    {#                button:{#}
-    {#                    "play the game again yes or no": function () {#}
-    {#                        $(this).dialog("close");#}
-    {#                    },#}
-    {#                    Cancel: function () {#}
-    {#                        $(this).dialog("close");#}
-    {#                        window.location.reload(true)#}
-
-
-
-    {#                    }#}
-    {#                }#}
-    {#            })#}
-    {##}
-    {#        })#}
-    {#    })#}
+{#        });#}
+{#            };#}
+{#            this is where the winner jquery will place a <div> with winner name#}
+{#            $(function () {#}
+{#                $("#play-game-again").dialog({#}
+{#                    resizable:false,#}
+{#                    height: "auto",#}
+{#                    width: 400,#}
+{#                    modal: true,#}
+{#                    button:{#}
+{#                        "play the game again yes or no": function () {#}
+{#                            $(this).dialog("close");#}
+{#                        },#}
+{#                        Cancel: function () {#}
+{#                            $(this).dialog("close");#}
+{#                            window.location.reload(true);#}
+{##}
+{##}
+{##}
+{#                        }#}
+{#                    }#}
+{#                })#}
+{##}
+{#            });#}
+{#        })#}
 
 
 </script>
