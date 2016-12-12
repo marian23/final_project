@@ -1,7 +1,10 @@
 # final_project
 basic single page card game (war)
+
 build application that play the war card game 
+
 project use html, css, javascript to create version of war card game.
+
 the game has  two player one is computer and other is human player so they play the game 
 
 the rules of war card game:
