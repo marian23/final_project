@@ -68,12 +68,14 @@ label{
     margin-right:-4px ;
 
 }
-.col-sm-3{
+.col-sm-3 {
     display: inline-block;
     float: none;
     text-align: left;
-    margin-right:-4px ;
+    margin-left:50px ;
+    padding-left: 50px;
 }
+
 #gameboard{
     display: block;
 
@@ -84,4 +86,7 @@ label{
     float: left;
     width: 100px;
 }
+
+
+
 

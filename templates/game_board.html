@@ -18,6 +18,7 @@
     <script src="../static/Jquery.cards.js"></script>
     <script src="../static/jquery.flip.js"></script>
 {#    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>#}
+{#    <h2 ng-if ="game.winner"#}
 
 
 </head>
@@ -83,6 +84,7 @@
     {##}
     {##}
     {#    </div>#}
+
 </div>
 
 <script type="text/javascript">
@@ -173,7 +175,7 @@
             }
         }
     };
-
+{# to shuffle the card#}
     var shuffle_winnings = function (player) {
         shuffle(player.win_pile);
         while (player.win_pile.length > 0) {
@@ -217,15 +219,46 @@
         console.log(comp_player, '----------------> Comp Player');
         console.log(human_player, '----------------> Human Player');
         {#        This click event is the basic round of a game of war#}
-        if (comp_player.hand.length==0 && comp_player.win_pile==0){
-{#            player win do something#}
-            alert('human_player win' + human_player.name)
+
+        function find_winner() {
+            if (comp_player.hand.length == 0) {
+                winner = ("computer wins the gamme");
+            } else {
+                if (human_player.hand.length == 0) {
+                    winner = ("human player win the game")
+                }
+            }
+
         }
-            if (human_player.hand.length==0 && human_player==0) {
+
+        {#        var  resetgame = document.getElementById('resetgame')#}
+        {#        resetgame.onclick = reloadPage;#}
+        {#        function reloadPage() {#}
+        {#            window.location.reload();#}
+        {#            #}
+        {#        }#}
+        {#            #}
+        {#        }#}
+        {#    #}
+        if (comp_player.hand.length == 0 && comp_player.win_pile == 0) {
+            {#            player win do something#}
+            alert('human_player win' + human_player.name);
+            function reset() {
+                document.getElementById('game').reset();
+                var resetgame = document.getElementById('resetgame');
+                resetgame.onclick = reloadPage;
+                function reloadPage() {
+                    window.location.reload();
+                }
+            }
+
+
+        }
+        if (human_player.hand.length == 0 && human_player == 0) {
 
             alert('computer_player win' + comp_player.name)
 
-            }
+        }
 
         $(".player-hand").click(function (e) {
 
@@ -259,9 +292,12 @@
 
             give_card_winner([computer_card, human_card], winner, comp_player, human_player);
             console.log(comp_player, human_player)
+            find_winner(human_player, comp_player)
 
 
-        })
+        });
+
+
 
 {#        }#}
     });
