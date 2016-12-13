@@ -68,12 +68,12 @@
         </div>
         <div class="col-sm-3 player_play_space">
             <!--where computer player play card-->
-            <img class="card" src="{{ url_for('static', filename='image/1Clubs.png') }}">
+{#            <img class="card" src="{{ url_for('static', filename='image/1Clubs.png') }}">#}
 
         </div>
         <div class="col-sm-1 win_pile">
             <!--where is computer winner pile is-->
-            <img class="card" src="{{ url_for('static', filename='image/1Clubs.png') }}">
+{#            <img class="card" src="{{ url_for('static', filename='image/1Clubs.png') }}">#}
 
         </div>
 
@@ -107,14 +107,15 @@
                 shuffle_winnings(player)
             }
             catch (error) {
-                call_winner_pile()
-            }
-        }
+                call_winner_pile(player)
+            }}
 
-        var card = player.hand.splice(0, 1)[0];
-        {#        alert(JSON.stringify(card),'------>pickcard')#}
-        {#        return JSON.stringify(card)#}
-        return card
+
+                var card = player.hand.splice(0, 1)[0];
+                {#        alert(JSON.stringify(card),'------>pickcard')#}
+                {#        return JSON.stringify(card)#}
+                return card
+
 
 
     };
@@ -220,16 +221,14 @@
         }
         return win_pile
     }
-    var call_winner_pile = function () {
-        if (comp_player.hand.length == 0 && comp_player.win_pile == 0) {
-            alert('computer player win' + comp_player.name);
-        } else {
-            if (human_player.hand.length == 0 && human_player.win_pile == 0) {
-                alert('human player win' + human_player.name);
-            }
+    var call_winner_pile = function (player) {
 
-
+        if (player.hand.length == 0 && player.win_pile == 0) {
+            alert( player.name + 'has won the game');
         }
+
+
+
     }
 
     $(document).ready(function () {
@@ -298,7 +297,14 @@
             var content = ('<img class="human_played_card card black-border"  name="' + human_card.card_owner + '" ,  src="/static/' + human_card['img_src'] + '">');
             $('.player_play_space').replaceWith('<div class="col-sm-3 player_play_space">' + content + '</div>');
             {#              Now we will check the cards values #}
-            var winner = check_card_values(computer_card, human_card);
+
+            try {
+                var winner = check_card_values(computer_card, human_card);
+            }
+            catch (error){
+
+            }
+
             if (winner == 'war') {
                 war(comp_player, human_player, [computer_card, human_card]);
             }
